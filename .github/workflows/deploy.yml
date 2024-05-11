@@ -1,0 +1,46 @@
+name: Build and deploy zayz api server
+
+on:
+  push:
+    branches:
+     - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [ ubuntu-latest ]
+    steps:
+     - name: Checkout Source
+       uses: actions/checkout@v4
+     - name: Setup Node
+       uses: actions/setup-node@v4
+       with:
+        node-version: 20
+     - name: Install Dependencies
+       run: yarn install
+     - name: Build Project
+       run: yarn build
+     - name: Get Version
+       id: read-package
+       run: echo "::set-output name=version::$(jq -r '.version' package.json)"
+     - name: Print version
+       run: echo "Package version is ${{ steps.read-package.outputs.version }}"
+     - name: Generate Deployment Package
+       uses: actions/upload-artifact@v2
+       with:
+        name: 'api-${{ steps.read-package.outputs.version }}'
+        path: |
+         dist/
+         package.json
+         yarn.lock
+     - name: Deploy to Elastic Beanstalk
+       uses: einaregilsson/beanstalk-deploy@v14
+       with:
+           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           region: 'us-east-1'
+           application_name: 'app-test' 
+           environment_name: 'App-test-env'
+           version_label: 'api-${{ steps.read-package.outputs.version }}'
+           artifact: 'api-${{ steps.read-package.outputs.version }}.zip'
+       
+
