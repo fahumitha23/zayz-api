@@ -33,7 +33,7 @@ jobs:
      - name: Generate Deployment Package
        run: zip -r 'api-${{ steps.read-package.outputs.version }}.zip' * .[^.]* -x "**node_modules**"
 
-     - name: Deploy to Elastic Beanstalk
+     - name: Deploy API to Elastic Beanstalk
        uses: einaregilsson/beanstalk-deploy@v14
        with:
            aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
