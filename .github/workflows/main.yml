@@ -33,7 +33,7 @@ jobs:
      - name: Generate Deployment Package
        uses: actions/upload-artifact@v2
        with:
-        name: 'api-${{ steps.read-package.outputs.version }}'
+        name: 'api-${{ steps.read-package.outputs.version }}.zip'
         path: |
          dist/
          package.json
