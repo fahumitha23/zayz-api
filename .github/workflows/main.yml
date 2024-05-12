@@ -53,6 +53,6 @@ jobs:
            application_name:  ${{ secrets.AWS_EBS_APP_NAME }}
            environment_name:  ${{ secrets.AWS_EBS_ENV_NAME }}
            version_label: 'api-${{ steps.read-package.outputs.version }}'
-           deployment_package: 'api-${{ steps.read-package.outputs.version }}.zip'
+           deployment_package: '/home/runner/work/zayz-api/zayz-api/api-${{ steps.read-package.outputs.version }}.zip'
        
 
