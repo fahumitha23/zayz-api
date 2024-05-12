@@ -39,6 +39,11 @@ jobs:
          package.json
          yarn.lock
          
+     - name: Download Deployment Artifact
+       uses: actions/download-artifact@v2
+       with:
+        name: 'api-${{ steps.read-package.outputs.version }}.zip'
+
      - name: Deploy to Elastic Beanstalk
        uses: einaregilsson/beanstalk-deploy@v14
        with:
